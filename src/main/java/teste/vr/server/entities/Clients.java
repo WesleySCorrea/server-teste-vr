@@ -2,12 +2,13 @@ package teste.vr.server.entities;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -27,6 +28,8 @@ public class Clients {
     private String lastName;
     @Column(name = "credit_limit", precision = 10, scale = 2)
     private BigDecimal creditLimit;
-    @Column(name = "due_date")
-    private LocalDateTime dueDate;
+    @Min(1)
+    @Max(31)
+    @Column(name = "due_day")
+    private Integer dueDay;
 }
