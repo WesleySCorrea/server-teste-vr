@@ -10,13 +10,14 @@ import teste.vr.server.dtos.response.OrderResponseDTO;
 import teste.vr.server.entities.Clients;
 import teste.vr.server.entities.Order;
 import teste.vr.server.exception.runtime.ObjectNotFoundException;
+import teste.vr.server.exception.runtime.OrderIsEmptyException;
 import teste.vr.server.exception.runtime.PersistFailedException;
 import teste.vr.server.repositories.OrderRepository;
+import teste.vr.server.repositories.ShoppingItemsRepositoty;
 import teste.vr.server.services.ClientService;
 import teste.vr.server.services.OrderService;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -24,9 +25,9 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
-
-    private final OrderRepository orderRepository;
     private final ClientService clientService;
+    private final OrderRepository orderRepository;
+    private final ShoppingItemsRepositoty shoppingItemsRepositoty;
 
     @Override
     public Page<OrderResponseDTO> findAllOrders(Pageable pageable) {
@@ -82,30 +83,14 @@ public class OrderServiceImpl implements OrderService {
         return clientInfoDTO;
     }
 
-//        this.productyQuantityService.saveProductQuantity(orderRequestDTO.getItems(), orderPersisted);
+    @Override
+    public OrderResponseDTO confirmOrder(Long id) {
 
-//    @Override
-//    public OrderResponseDTO updateOrder(Long id, OrderRequestDTO orderRequestDTO) {
-//
-//        var orderPersisted = this.findOrderById(id);
-//
-//        if (orderPersisted == null) throw new RuntimeException("Order not found");
-//
-//        Order order = orderRequestDTO.converterPersisted(orderPersisted);
-//
-//        Order orderUpdated = this.orderRepository.save(order);
-//
-//        return new OrderResponseDTO(orderUpdated);
-//
-//    }
+        BigDecimal totalValueOrder = this.shoppingItemsRepositoty.findTotalByOrderId(id);
 
-//    @Override
-//    public void deleteOrder(Long id) {
-//
-//        var order = this.orderRepository.findByActiveIsTrueAndId(id);
-//
-//        if (order == null) throw new RuntimeException("Order not found");
-//
-//        this.orderRepository.updateActiveFalseById(id);
-//    }
+        if (totalValueOrder == null) throw new OrderIsEmptyException("Your order is empty");
+        this.orderRepository.updateTotalValueAndFinishByOrderId(id, totalValueOrder);
+
+        return this.findOrderById(id);
+    }
 }

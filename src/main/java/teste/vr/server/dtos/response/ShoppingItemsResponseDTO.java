@@ -15,17 +15,12 @@ import java.math.BigDecimal;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ShoppingItemsResponseDTO {
 
-    //Reduzir order e product pois ja estao na pk
     private ShoppingItemsId id;
-    private Long orderId;
-    private Long productId;
     private Integer quantity;
     private BigDecimal subtotal;
 
     public ShoppingItemsResponseDTO(ShoppingItems shoppingItems) {
         this.id = shoppingItems.getId();
-        this.orderId = shoppingItems.getOrder().getId();
-        this.productId = shoppingItems.getProduct().getId();
         this.quantity = shoppingItems.getQuantity();
         this.subtotal = shoppingItems.getSubtotal();
     }

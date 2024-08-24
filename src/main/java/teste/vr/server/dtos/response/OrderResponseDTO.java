@@ -18,11 +18,13 @@ public class OrderResponseDTO {
     private Long orderId;
     private Long clientId;
     private BigDecimal totalValue;
+    private Boolean finished;
 
     public OrderResponseDTO(Order order) {
         this.orderId = order.getId();
         this.clientId = order.getClient().getId();
         this.totalValue = this.calculeTotalValue(order);
+        this.finished = order.getFinished();
     }
 
     private BigDecimal calculeTotalValue(Order order) {

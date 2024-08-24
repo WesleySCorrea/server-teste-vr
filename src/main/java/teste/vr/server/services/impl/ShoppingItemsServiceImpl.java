@@ -66,6 +66,7 @@ public class ShoppingItemsServiceImpl implements ShoppingItemsService {
     private void limitValidate(Long orderId, BigDecimal subtotal) {
 
         BigDecimal totalValueByOrder = this.shoppingItemsRepositoty.findTotalByOrderId(orderId);
+
         if (totalValueByOrder == null) totalValueByOrder = BigDecimal.ZERO;
 
         BigDecimal newTotalValue = totalValueByOrder.add(subtotal);
@@ -112,4 +113,5 @@ public class ShoppingItemsServiceImpl implements ShoppingItemsService {
             shoppingItems.setSubtotal(price.multiply(qty));
         }
     }
+
 }

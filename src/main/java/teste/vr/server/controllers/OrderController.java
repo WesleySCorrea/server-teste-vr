@@ -41,6 +41,14 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.CREATED).body(order);
     }
 
+    @PatchMapping("/confirm/{id}")
+    public ResponseEntity<OrderResponseDTO> confirmOrder(@PathVariable Long id) {
+
+        OrderResponseDTO order = this.orderService.confirmOrder(id);
+
+        return ResponseEntity.ok().body(order);
+    }
+
 //    @PatchMapping("/{id}")
 //    public ResponseEntity<OrderResponseDTO> updateOrder(@PathVariable Long id,@RequestBody OrderRequestDTO orderResponseDTO) {
 //

@@ -29,6 +29,18 @@ public class ResourceExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(status).body(err);
     }
 
+    @ExceptionHandler(OrderIsEmptyException.class)
+    public ResponseEntity<Object> orderIsEmptyException(OrderIsEmptyException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        ValidationError err = new ValidationError();
+        err.setTimestamp(Instant.now());
+        err.setStatus(status.value());
+        err.setError(e.getMessage());
+        err.setPath(request.getRequestURI());
+        err.setErrors(Collections.singletonList(new FieldMessage("OrderIsEmptyException",e.getMessage())));
+        return ResponseEntity.status(status).body(err);
+    }
+
     @ExceptionHandler(ObjectNotFoundException.class)
     public ResponseEntity<Object> objectNotFoundException(ObjectNotFoundException e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.NOT_FOUND;

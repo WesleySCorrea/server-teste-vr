@@ -31,6 +31,8 @@ public class Order {
     private Set<ShoppingItems> items = new HashSet<>();
     @Column(name = "total_value", precision = 10, scale = 2)
     private BigDecimal totalValue = BigDecimal.ZERO;
+    @Column(name = "finished")
+    private Boolean finished = Boolean.FALSE;
 
 
     @PreUpdate
