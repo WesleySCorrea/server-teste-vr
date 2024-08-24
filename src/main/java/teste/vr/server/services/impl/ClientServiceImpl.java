@@ -1,19 +1,20 @@
 package teste.vr.server.services.impl;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import teste.vr.server.dtos.request.ClientRequestDTO;
 import teste.vr.server.dtos.response.ClientResponseDTO;
 import teste.vr.server.entities.Clients;
+import teste.vr.server.exception.runtime.ObjectNotFoundException;
 import teste.vr.server.repositories.ClientRepository;
 import teste.vr.server.services.ClientService;
 
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ClientServiceImpl implements ClientService {
 
     private final ClientRepository clientRepository;
@@ -24,6 +25,12 @@ public class ClientServiceImpl implements ClientService {
         Page<Clients> clients = clientRepository.findAll(pageable);
 
         return clients.map(ClientResponseDTO::new);
+    }
+
+    @Override
+    public Clients findByIdAndActiveIsTrue(Long id) {
+
+        return clientRepository.findByActiveIsTrueAndId(id);
     }
 
     @Override
@@ -44,9 +51,8 @@ public class ClientServiceImpl implements ClientService {
 
             return new ClientResponseDTO(clientPersisted);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new ObjectNotFoundException("Client not saved");
         }
-        return null;
     }
 
     @Override
@@ -54,9 +60,7 @@ public class ClientServiceImpl implements ClientService {
 
         var clientPersisted = this.findClientById(id);
 
-        if (clientPersisted == null) {
-            throw new RuntimeException("Client not found");
-        }
+        if (clientPersisted == null) throw new ObjectNotFoundException("Client not found");
 
         Clients client = clientRequestDTO.converterPersisted(clientPersisted);
 
@@ -69,11 +73,10 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public void deleteClient(Long id) {
 
-        var client = this.findClientById(id);
+        var client = this.clientRepository.findByActiveIsTrueAndId(id);
 
-        if (client == null) {
-            throw new RuntimeException("Client not found");
-        }
-        this.clientRepository.deleteById(id);
+        if (client == null) throw new ObjectNotFoundException("Client not found");
+
+        this.clientRepository.updateActiveFalseById(id);
     }
 }

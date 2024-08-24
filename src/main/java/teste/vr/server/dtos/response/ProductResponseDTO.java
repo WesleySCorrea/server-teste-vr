@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import teste.vr.server.entities.Clients;
 import teste.vr.server.entities.Products;
 
 import java.math.BigDecimal;
@@ -19,11 +18,13 @@ public class ProductResponseDTO {
     private String title;
     private String description;
     private BigDecimal price;
+    private Boolean active;
 
     public ProductResponseDTO (Products product) {
         this.id = product.getId();
         this.title = product.getTitle();
         this.description = product.getDescription();
         this.price = product.getPrice();
+        this.active = product.getActive();
     }
 }

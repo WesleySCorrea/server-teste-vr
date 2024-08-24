@@ -1,8 +1,9 @@
 package teste.vr.server.controllers;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,7 @@ import teste.vr.server.services.ClientService;
 import java.net.URI;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/client")
 public class ClientController {
 
@@ -41,7 +42,7 @@ public class ClientController {
         ClientResponseDTO clientPersisted = this.clientService.saveClient(clientRequestDTO);
         URI location = URI.create("/api/your-entities/" + clientPersisted.getId());
 
-        return ResponseEntity.created(location).body(clientPersisted);
+        return ResponseEntity.status(HttpStatus.CREATED).body(clientPersisted);
     }
 
     @PatchMapping("/{id}")

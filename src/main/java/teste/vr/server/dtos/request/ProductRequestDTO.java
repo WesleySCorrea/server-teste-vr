@@ -1,6 +1,5 @@
 package teste.vr.server.dtos.request;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -12,19 +11,20 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @RequiredArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ProductRequestDTO {
 
     private Long id;
     private String title;
     private String description;
     private BigDecimal price;
+    private Boolean active;
 
     public Products converterDTO() {
         Products products = new Products();
         products.setTitle(this.getTitle());
         products.setDescription(this.getDescription());
         products.setPrice(this.getPrice());
+        products.setActive(this.getActive());
         return products;
     }
 
@@ -37,17 +37,20 @@ public class ProductRequestDTO {
         } else {
             products.setTitle(productResponseDTO.getTitle());
         }
-
         if (this.getDescription() != null) {
             products.setDescription(this.getDescription());
         } else {
             products.setDescription(productResponseDTO.getDescription());
         }
-
         if (this.getPrice() != null) {
             products.setPrice(this.getPrice());
         } else {
             products.setPrice(productResponseDTO.getPrice());
+        }
+        if (this.getActive() != null) {
+            products.setActive(this.getActive());
+        } else {
+            products.setActive(productResponseDTO.getActive());
         }
 
         return products;

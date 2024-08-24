@@ -1,19 +1,22 @@
 package teste.vr.server.services.impl;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import teste.vr.server.dtos.request.ProductRequestDTO;
 import teste.vr.server.dtos.response.ProductResponseDTO;
 import teste.vr.server.entities.Products;
+import teste.vr.server.exception.runtime.ObjectNotFoundException;
+import teste.vr.server.exception.runtime.PersistFailedException;
 import teste.vr.server.repositories.ProductRepository;
 import teste.vr.server.services.ProductService;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
@@ -21,7 +24,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<ProductResponseDTO> findAllProducts(Pageable pageable) {
 
-        Page<Products> products = productRepository.findAll(pageable);
+        Page<Products> products = productRepository.findAllByActiveIsTrue(pageable);
 
         return products.map(ProductResponseDTO::new);
     }
@@ -44,9 +47,8 @@ public class ProductServiceImpl implements ProductService {
 
             return new ProductResponseDTO(productPersisted);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new PersistFailedException("Product not found");
         }
-        return null;
     }
 
     @Override
@@ -54,9 +56,7 @@ public class ProductServiceImpl implements ProductService {
 
         var productPersisted = this.findProductById(id);
 
-        if (productPersisted == null) {
-            throw new RuntimeException("Product not found");
-        }
+        if (productPersisted == null) throw new ObjectNotFoundException("Product not found");
 
         Products products = productRequestDTO.converterPersisted(productPersisted);
 
@@ -68,11 +68,16 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteProduct(Long id) {
 
-        var product = this.findProductById(id);
+        var product = this.productRepository.findByActiveIsTrueAndId(id);
 
-        if (product == null) {
-            throw new RuntimeException("Product not found");
-        }
-        this.productRepository.deleteById(id);
+        if (product == null) throw new ObjectNotFoundException("Product not found");
+
+        this.productRepository.updateActiveFalseById(id);
+    }
+
+    @Override
+    public BigDecimal findPriceByProductId(Long productId) {
+
+        return this.productRepository.findPriceByProductId(productId);
     }
 }

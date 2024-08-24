@@ -14,7 +14,6 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @RequiredArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ClientRequestDTO {
 
     private String name;
@@ -23,6 +22,7 @@ public class ClientRequestDTO {
     @Min(1)
     @Max(31)
     private Integer dueDate;
+    private Boolean active;
 
     public Clients converterDTO() {
         Clients clients = new Clients();
@@ -42,23 +42,25 @@ public class ClientRequestDTO {
         } else {
             clients.setName(clientPersisted.getName());
         }
-
         if (this.getLastName() != null) {
             clients.setLastName(this.getLastName());
         } else {
             clients.setLastName(clientPersisted.getLastName());
         }
-
         if (this.getCreditLimit() != null) {
             clients.setCreditLimit(this.getCreditLimit());
         } else {
             clients.setCreditLimit(clientPersisted.getCreditLimit());
         }
-
         if (this.getDueDate() != null) {
             clients.setDueDay(this.getDueDate());
         } else {
             clients.setDueDay(clientPersisted.getDueDate());
+        }
+        if (this.getActive() != null) {
+            clients.setActive(this.getActive());
+        } else {
+            clients.setActive(clientPersisted.getActive());
         }
 
         return clients;

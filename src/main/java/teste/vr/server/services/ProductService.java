@@ -5,6 +5,8 @@ import org.springframework.data.domain.Pageable;
 import teste.vr.server.dtos.request.ProductRequestDTO;
 import teste.vr.server.dtos.response.ProductResponseDTO;
 
+import java.math.BigDecimal;
+
 public interface ProductService {
     
     Page<ProductResponseDTO> findAllProducts(Pageable pageable);
@@ -12,4 +14,5 @@ public interface ProductService {
     ProductResponseDTO saveProduct(ProductRequestDTO productRequestDTO);
     ProductResponseDTO updateProduct(Long id, ProductRequestDTO productRequestDTO);
     void deleteProduct(Long id);
+    BigDecimal findPriceByProductId(Long productId);
 }

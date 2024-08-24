@@ -1,18 +1,17 @@
 package teste.vr.server.controllers;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import teste.vr.server.dtos.request.ProductRequestDTO;
 import teste.vr.server.dtos.response.ProductResponseDTO;
 import teste.vr.server.services.ProductService;
 
-import java.net.URI;
-
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/products")
 public class ProductController {
 
@@ -38,9 +37,8 @@ public class ProductController {
     public ResponseEntity<ProductResponseDTO> saveClient(@RequestBody ProductRequestDTO productRequestDTO) {
 
         ProductResponseDTO productPersisted = this.productService.saveProduct(productRequestDTO);
-        URI location = URI.create("/api/your-entities/" + productPersisted.getId());
 
-        return ResponseEntity.created(location).body(productPersisted);
+        return ResponseEntity.status(HttpStatus.CREATED).body(productPersisted);
     }
 
     @PatchMapping("/{id}")

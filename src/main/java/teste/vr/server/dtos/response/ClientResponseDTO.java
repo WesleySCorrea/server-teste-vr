@@ -19,6 +19,7 @@ public class ClientResponseDTO {
     private String lastName;
     private BigDecimal creditLimit;
     private Integer dueDate;
+    private Boolean active;
 
     public ClientResponseDTO (Clients client) {
         this.id = client.getId();
@@ -26,5 +27,6 @@ public class ClientResponseDTO {
         this.lastName = client.getLastName();
         this.creditLimit = client.getCreditLimit();
         this.dueDate = client.getDueDay();
+        this.active = client.getActive();
     }
 }
