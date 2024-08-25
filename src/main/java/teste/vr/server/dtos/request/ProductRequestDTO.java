@@ -7,6 +7,7 @@ import teste.vr.server.dtos.response.ProductResponseDTO;
 import teste.vr.server.entities.Products;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -17,14 +18,13 @@ public class ProductRequestDTO {
     private String title;
     private String description;
     private BigDecimal price;
-    private Boolean active;
+    private Boolean active = Boolean.TRUE;
 
     public Products converterDTO() {
         Products products = new Products();
         products.setTitle(this.getTitle());
         products.setDescription(this.getDescription());
         products.setPrice(this.getPrice());
-        products.setActive(this.getActive());
         return products;
     }
 

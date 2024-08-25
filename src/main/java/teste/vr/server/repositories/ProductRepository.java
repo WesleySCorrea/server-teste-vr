@@ -18,8 +18,8 @@ public interface ProductRepository extends JpaRepository<Products, Long> {
     Page<Products> findAllByActiveIsTrue(Pageable pageable);
     @Modifying
     @Transactional
-    @Query(value = "UPDATE Products p SET p.active = false WHERE p.id = :id", nativeQuery = true)
+    @Query(value = "UPDATE Products SET active = false WHERE id = :id", nativeQuery = true)
     void updateActiveFalseById(Long id);
-    @Query(value = "SELECT price FROM Products p WHERE p.id = :productId", nativeQuery = true)
+    @Query(value = "SELECT price FROM Products WHERE id = :productId", nativeQuery = true)
     BigDecimal findPriceByProductId(Long productId);
 }

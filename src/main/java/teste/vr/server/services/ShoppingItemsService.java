@@ -5,8 +5,6 @@ import org.springframework.data.domain.Pageable;
 import teste.vr.server.dtos.request.ShoppingItemsRequestDTO;
 import teste.vr.server.dtos.response.ShoppingItemsResponseDTO;
 
-import java.math.BigDecimal;
-
 public interface ShoppingItemsService {
 
     Page<ShoppingItemsResponseDTO> findAllByOrderId(Long orderId, Pageable pageable);

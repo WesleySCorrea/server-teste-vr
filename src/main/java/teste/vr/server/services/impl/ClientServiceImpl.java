@@ -22,7 +22,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Page<ClientResponseDTO> findAllClients(Pageable pageable) {
 
-        Page<Clients> clients = clientRepository.findAll(pageable);
+        Page<Clients> clients = clientRepository.findAllByActiveIsTrue(pageable);
 
         return clients.map(ClientResponseDTO::new);
     }

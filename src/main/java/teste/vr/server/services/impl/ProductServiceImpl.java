@@ -13,7 +13,6 @@ import teste.vr.server.repositories.ProductRepository;
 import teste.vr.server.services.ProductService;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,9 +31,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponseDTO findProductById(Long id) {
 
-        Optional<Products> optionalProducts = productRepository.findById(id);
+        Products products = productRepository.findByActiveIsTrueAndId(id);
 
-        return optionalProducts.map(ProductResponseDTO::new).orElse(null);
+        if (products == null) throw new ObjectNotFoundException("Product not found");
+
+        return new ProductResponseDTO(products);
     }
 
     @Override
