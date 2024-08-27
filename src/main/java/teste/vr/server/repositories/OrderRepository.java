@@ -1,5 +1,7 @@
 package teste.vr.server.repositories;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,6 +15,10 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
+    Boolean existsOrderByIdAndFinishedIsTrue(Long id);
+    Page<Order> findAllOrdersByClientId(Long clientId, Pageable pageable);
+    @Query(value = "SELECT * FROM orders JOIN shopping_items ON orders.id = shopping_items.order_id WHERE shopping_items.product_id = :productId", nativeQuery = true)
+    Page<Order> findAllOrdersByProductId(Long productId, Pageable pageable);
     @Modifying
     @Transactional
     @Query(value = "UPDATE Orders SET total_value = :totalValue WHERE id = :orderId", nativeQuery = true)

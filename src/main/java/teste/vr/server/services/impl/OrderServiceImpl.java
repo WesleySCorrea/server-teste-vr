@@ -11,6 +11,7 @@ import teste.vr.server.entities.Clients;
 import teste.vr.server.entities.Order;
 import teste.vr.server.exception.runtime.ObjectNotFoundException;
 import teste.vr.server.exception.runtime.OrderIsEmptyException;
+import teste.vr.server.exception.runtime.OrderIsFinishedException;
 import teste.vr.server.exception.runtime.PersistFailedException;
 import teste.vr.server.repositories.OrderRepository;
 import teste.vr.server.repositories.ShoppingItemsRepositoty;
@@ -33,6 +34,22 @@ public class OrderServiceImpl implements OrderService {
     public Page<OrderResponseDTO> findAllOrders(Pageable pageable) {
 
         Page<Order> orders = orderRepository.findAll(pageable);
+
+        return orders.map(OrderResponseDTO::new);
+    }
+
+    @Override
+    public Page<OrderResponseDTO> findAllOrdersByClientId(Long clientId, Pageable pageable) {
+
+        Page<Order> orders = orderRepository.findAllOrdersByClientId(clientId, pageable);
+
+        return orders.map(OrderResponseDTO::new);
+    }
+
+    @Override
+    public Page<OrderResponseDTO> findAllOrdersByProductId(Long productId, Pageable pageable) {
+
+        Page<Order> orders = orderRepository.findAllOrdersByProductId(productId,pageable);
 
         return orders.map(OrderResponseDTO::new);
     }
@@ -93,4 +110,17 @@ public class OrderServiceImpl implements OrderService {
 
         return this.findOrderById(id);
     }
+
+    @Override
+    public void deleteOrder(Long id) {
+
+        if (this.orderRepository.existsOrderByIdAndFinishedIsTrue(id)) {
+            throw new OrderIsFinishedException("Order already finished");
+        } if (!this.orderRepository.existsById(id)) {
+            throw new ObjectNotFoundException("Order not found");
+        }
+        this.orderRepository.deleteById(id);
+    }
+
+
 }

@@ -25,6 +25,21 @@ public class OrderController {
         return ResponseEntity.ok().body(orders);
     }
 
+    @GetMapping("/client/{id}")
+    public ResponseEntity<Page<OrderResponseDTO>> findAllByClientId(Pageable pageable, @PathVariable Long id) {
+
+        Page<OrderResponseDTO> orders = this.orderService.findAllOrdersByClientId(id, pageable);
+
+        return ResponseEntity.ok().body(orders);
+    }
+    @GetMapping("/product/{id}")
+    public ResponseEntity<Page<OrderResponseDTO>> findAllByProductId(Pageable pageable, @PathVariable Long id) {
+
+        Page<OrderResponseDTO> orders = this.orderService.findAllOrdersByProductId(id,pageable);
+
+        return ResponseEntity.ok().body(orders);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<OrderResponseDTO> findOrderById(@PathVariable Long id) {
 
@@ -57,11 +72,11 @@ public class OrderController {
 //        return ResponseEntity.ok().body(orderPersisted);
 //    }
 //
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
-//
-//        this.orderService.deleteOrder(id);
-//
-//        return ResponseEntity.noContent().build();
-//    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
+
+        this.orderService.deleteOrder(id);
+
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -41,6 +41,18 @@ public class ResourceExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(status).body(err);
     }
 
+    @ExceptionHandler(OrderIsFinishedException.class)
+    public ResponseEntity<Object> orderIsFinishedException(OrderIsFinishedException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        ValidationError err = new ValidationError();
+        err.setTimestamp(Instant.now());
+        err.setStatus(status.value());
+        err.setError(e.getMessage());
+        err.setPath(request.getRequestURI());
+        err.setErrors(Collections.singletonList(new FieldMessage("OrderIsFinishedException",e.getMessage())));
+        return ResponseEntity.status(status).body(err);
+    }
+
     @ExceptionHandler(ObjectNotFoundException.class)
     public ResponseEntity<Object> objectNotFoundException(ObjectNotFoundException e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.NOT_FOUND;

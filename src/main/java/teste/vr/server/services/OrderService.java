@@ -11,10 +11,13 @@ import java.math.BigDecimal;
 public interface OrderService {
 
     Page<OrderResponseDTO> findAllOrders(Pageable pageable);
+    Page<OrderResponseDTO> findAllOrdersByClientId(Long clientId, Pageable pageable);
+    Page<OrderResponseDTO> findAllOrdersByProductId(Long productId, Pageable pageable);
     OrderResponseDTO findOrderById(Long id);
     OrderResponseDTO saveOrder(OrderRequestDTO orderRequestDTO);
 //    OrderResponseDTO updateOrder(Long id, OrderRequestDTO orderRequestDTO);
 //    void deleteOrder(Long id);
     ClientInfoDTO findClientInfoByOrderId(Long orderId);
     OrderResponseDTO confirmOrder(Long id);
+    void deleteOrder(Long id);
 }

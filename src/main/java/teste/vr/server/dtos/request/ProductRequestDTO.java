@@ -32,12 +32,12 @@ public class ProductRequestDTO {
         Products products = new Products();
         products.setId(productResponseDTO.getId());
 
-        if (this.getTitle() != null) {
+        if (this.getTitle() != null  && !this.getTitle().isEmpty()) {
             products.setTitle(this.getTitle());
         } else {
             products.setTitle(productResponseDTO.getTitle());
         }
-        if (this.getDescription() != null) {
+        if (this.getDescription() != null && !this.getDescription().isEmpty()) {
             products.setDescription(this.getDescription());
         } else {
             products.setDescription(productResponseDTO.getDescription());

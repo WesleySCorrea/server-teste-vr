@@ -1,6 +1,5 @@
 package teste.vr.server.dtos.request;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.Getter;
@@ -37,12 +36,12 @@ public class ClientRequestDTO {
         Clients clients = new Clients();
         clients.setId(clientPersisted.getId());
 
-        if (this.getName() != null) {
+        if (this.getName() != null && !this.getName().isEmpty()) {
             clients.setName(this.getName());
         } else {
             clients.setName(clientPersisted.getName());
         }
-        if (this.getLastName() != null) {
+        if (this.getLastName() != null && !this.getLastName().isEmpty()) {
             clients.setLastName(this.getLastName());
         } else {
             clients.setLastName(clientPersisted.getLastName());
