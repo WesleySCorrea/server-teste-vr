@@ -29,4 +29,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     void updateTotalValueAndFinishByOrderId(Long orderId, BigDecimal totalValue);
     @Query(value = "SELECT c.credit_limit, c.due_day FROM Orders o JOIN Clients c ON o.client_id = c.id WHERE o.id = :orderId", nativeQuery = true)
     List<Object[]> findClientInfoByOrderId(Long orderId);
+    @Query(value = "SELECT SUM(subtotal), finished, client_id FROM orders LEFT JOIN shopping_items ON orders.id = shopping_items.order_id WHERE orders.id = :orderId GROUP BY orders.finished, orders.client_id", nativeQuery = true)
+    List<Object[]> findOrderInfoByOrderId(Long orderId);
 }

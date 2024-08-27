@@ -6,8 +6,6 @@ import teste.vr.server.dtos.ClientInfoDTO;
 import teste.vr.server.dtos.request.OrderRequestDTO;
 import teste.vr.server.dtos.response.OrderResponseDTO;
 
-import java.math.BigDecimal;
-
 public interface OrderService {
 
     Page<OrderResponseDTO> findAllOrders(Pageable pageable);
@@ -15,8 +13,6 @@ public interface OrderService {
     Page<OrderResponseDTO> findAllOrdersByProductId(Long productId, Pageable pageable);
     OrderResponseDTO findOrderById(Long id);
     OrderResponseDTO saveOrder(OrderRequestDTO orderRequestDTO);
-//    OrderResponseDTO updateOrder(Long id, OrderRequestDTO orderRequestDTO);
-//    void deleteOrder(Long id);
     ClientInfoDTO findClientInfoByOrderId(Long orderId);
     OrderResponseDTO confirmOrder(Long id);
     void deleteOrder(Long id);
