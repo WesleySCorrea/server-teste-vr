@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres
+    container_name: postgres-vrsoftware
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: Database-VRSoftware
+    ports:
+      - "5432:5432"
+    networks:
+      - vrsoftware-network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: server-teste-vr-container
+    ports:
+      - "8080:8080"
+    networks:
+      - vrsoftware-network
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-vrsoftware:5432/Database-VRSoftware
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    depends_on:
+      - postgres
+
+networks:
+  vrsoftware-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
