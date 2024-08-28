@@ -7,7 +7,6 @@ import teste.vr.server.dtos.response.ProductResponseDTO;
 import teste.vr.server.entities.Products;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 
 @Getter
 @Setter

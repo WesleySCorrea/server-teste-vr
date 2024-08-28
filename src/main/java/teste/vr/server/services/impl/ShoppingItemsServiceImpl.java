@@ -2,11 +2,13 @@ package teste.vr.server.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import teste.vr.server.dtos.ClientInfoDTO;
 import teste.vr.server.dtos.request.ShoppingItemsRequestDTO;
 import teste.vr.server.dtos.response.ShoppingItemsResponseDTO;
+import teste.vr.server.dtos.response.ShoppingItemsWithProductResponseDTO;
 import teste.vr.server.entities.ShoppingItems;
 import teste.vr.server.exception.runtime.CreditLimitExceededException;
 import teste.vr.server.exception.runtime.DuplicateProductAttemptException;
@@ -18,6 +20,8 @@ import teste.vr.server.services.ShoppingItemsService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +37,18 @@ public class ShoppingItemsServiceImpl implements ShoppingItemsService {
         Page<ShoppingItems> shoppingItems = this.shoppingItemsRepositoty.findAllByOrderId(orderId, pageable);
 
         return shoppingItems.map(ShoppingItemsResponseDTO::new);
+    }
+
+    @Override
+    public Page<ShoppingItemsWithProductResponseDTO> findAllByOrderIdWithProduct(Long orderId, Pageable pageable) {
+
+        List<Object[]> shoppingItems = this.shoppingItemsRepositoty.findAllByOrderIdWithProduct(orderId, pageable);
+
+        List<ShoppingItemsWithProductResponseDTO> dtos = shoppingItems.stream()
+                .map(ShoppingItemsWithProductResponseDTO::new)
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(dtos, pageable, dtos.size());
     }
 
     @Override

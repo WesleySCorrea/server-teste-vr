@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import teste.vr.server.exception.runtime.ObjectNotFoundException;
 
 import java.math.BigDecimal;
 

@@ -1,6 +1,5 @@
 package teste.vr.server.dtos.request;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

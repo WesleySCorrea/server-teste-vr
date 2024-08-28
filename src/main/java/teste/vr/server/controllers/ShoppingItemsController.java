@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import teste.vr.server.dtos.request.ShoppingItemsRequestDTO;
 import teste.vr.server.dtos.response.ShoppingItemsResponseDTO;
+import teste.vr.server.dtos.response.ShoppingItemsWithProductResponseDTO;
 import teste.vr.server.services.ShoppingItemsService;
 
 @RestController
@@ -21,6 +22,14 @@ public class ShoppingItemsController {
     public ResponseEntity<Page<ShoppingItemsResponseDTO>> findAllByOrderId(@PathVariable Long orderId, Pageable pageable) {
 
         Page<ShoppingItemsResponseDTO> shoppingItems = this.shoppingItemsService.findAllByOrderId(orderId, pageable);
+
+        return ResponseEntity.ok().body(shoppingItems);
+    }
+
+    @GetMapping({"/order/{orderId}/products"})
+    public ResponseEntity<Page<ShoppingItemsWithProductResponseDTO>> findAllByOrderIdWithProduct(@PathVariable Long orderId, Pageable pageable) {
+
+        Page<ShoppingItemsWithProductResponseDTO> shoppingItems = this.shoppingItemsService.findAllByOrderIdWithProduct(orderId, pageable);
 
         return ResponseEntity.ok().body(shoppingItems);
     }
