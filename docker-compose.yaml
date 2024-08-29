@@ -14,7 +14,7 @@ services:
       - vrsoftware-network
 
   server:
-    image: wesleyscorrea/server_vr
+    image: wesleyscorrea/server_vr:latest
     container_name: server-teste-vr-container
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-vrsoftware:5432/Database-VRSoftware
